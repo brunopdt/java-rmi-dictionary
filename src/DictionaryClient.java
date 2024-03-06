@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.util.Scanner;
 
 public class DictionaryClient {
+	// Invoca método remoto de procurar o significado da palavra
 	private static void lookup(Scanner sc, Dictionary dic) throws RemoteException {
 		System.out.print("Digite o nome da chave que gostaria de saber o significado: ");
 		String key = sc.nextLine();
@@ -13,6 +14,7 @@ public class DictionaryClient {
 		System.out.println(key + "\": " + result + "\n");
 	}
 
+	// Invoca método remoto de adicionar palavra
 	private static void add(Scanner sc, Dictionary dic) throws RemoteException {
 		System.out.print("Digite o nome da chave que gostaria de adicionar: ");
 		String key = sc.nextLine();
@@ -22,6 +24,7 @@ public class DictionaryClient {
 		System.out.println(result + "\n");
 	}
 
+	// Invoca método remoto de remover palavra do dicionário
 	private static void remove(Scanner sc, Dictionary dic) throws RemoteException {
 		System.out.print("Digite a chave que gostaria de remover: ");
 		String key = sc.nextLine();
@@ -30,17 +33,21 @@ public class DictionaryClient {
 	}
 
 	public static void main(String[] args) {
+		// Caso um endereço não seja fornecido, o servidor é buscado em localhost
 		String serverAddress = "localhost";
 		String serviceName = "/DictionaryServer";
 		if (args.length == 1)
 			serverAddress = args[0];
+
 		int input;
 		Scanner sc = new Scanner(System.in);
 
 		try {
+			// Busca instanciar um objeto remoto
 			Dictionary dic = (Dictionary) Naming.lookup("rmi://" + serverAddress + serviceName);
 			System.out.println("Objeto remoto \'" + serviceName + "\' encontrado no servidor.");
 
+			// Loop de questões
 			do {
 				System.out.println("O que gostaria de fazer?");
 				System.out.println("1 - Consultar o significado de uma palavra");
