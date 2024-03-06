@@ -30,13 +30,15 @@ public class DictionaryClient {
 	}
 
 	public static void main(String[] args) {
-		String server = "rmi://localhost/";
-		String serviceName = "CalculadoraService";
+		String serverAddress = "localhost";
+		String serviceName = "/DictionaryServer";
+		if (args.length == 1)
+			serverAddress = args[0];
 		int input;
 		Scanner sc = new Scanner(System.in);
 
 		try {
-			Dictionary dic = (Dictionary) Naming.lookup(server + serviceName);
+			Dictionary dic = (Dictionary) Naming.lookup("rmi://" + serverAddress + serviceName);
 			System.out.println("Objeto remoto \'" + serviceName + "\' encontrado no servidor.");
 
 			do {
@@ -70,7 +72,7 @@ public class DictionaryClient {
 			} while (input != 9);
 
 		} catch (MalformedURLException e) {
-			System.out.println("URL \'" + server + serviceName + "\' mal formatada.");
+			System.out.println("URL \'" + serverAddress + serviceName + "\' mal formatada.");
 		} catch (RemoteException e) {
 			System.out.println("Erro na invocacao remota.");
 			e.printStackTrace();
