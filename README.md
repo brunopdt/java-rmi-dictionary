@@ -23,6 +23,6 @@ O projeto RMI em Java consiste em quatro componentes principais:
 
 3. **Interface (Dictionary):** Define os métodos que podem ser invocados remotamente no objeto do dicionário. Inclui operações como pesquisa (`lookup`), adição (`add`) e remoção (`remove`) de palavras.
 
-4. **Implementação do Servidor (DictionaryServant):** Fornece a lógica de negócios para as operações do dicionário. Implementa a interface `IDictionary` e define os métodos para realizar as operações correspondentes.
+4. **Implementação do Servidor (DictionaryServant):** Fornece a lógica de negócios para as operações do dicionário. Implementa a interface `IDictionary` e define os métodos para realizar as operações correspondentes. Vale ressaltar que os dados são salvos em um arquivo ```dictionary.ser```, por meio do Java Serialization Object.
 
-Esses componentes trabalham juntos para fornecer um sistema de dicionário distribuído, permitindo que os clientes acessem os serviços do dicionário de forma transparente, sem se preocupar com os detalhes da comunicação remota.
+Esses componentes trabalham juntos para fornecer um sistema de dicionário distribuído e persistente, permitindo que os clientes acessem os serviços do dicionário de forma transparente, sem se preocupar com os detalhes da comunicação remota.

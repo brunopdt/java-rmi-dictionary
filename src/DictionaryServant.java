@@ -1,8 +1,9 @@
+import java.io.*;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DictionaryServant extends java.rmi.server.UnicastRemoteObject implements Dictionary {
+public class DictionaryServant extends java.rmi.server.UnicastRemoteObject implements Dictionary, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// Declaração do dicionário que os métodos da classe afetarão
@@ -16,6 +17,7 @@ public class DictionaryServant extends java.rmi.server.UnicastRemoteObject imple
 	public DictionaryServant() throws java.rmi.RemoteException {
 		super();
 		dictionary = new HashMap<>();
+		loadState(); // Carregar estado inicial do dicionário
 	}
 
 	// Método que adiciona palavras ao dicionário
@@ -24,6 +26,7 @@ public class DictionaryServant extends java.rmi.server.UnicastRemoteObject imple
 			return DUPLICATE_KEY_ERROR;
 		} else {
 			dictionary.put(key, value);
+			saveState(); // Salvar estado após adicionar uma palavra
 			return SUCCESS_RESPONSE;
 		}
 	}
@@ -32,6 +35,7 @@ public class DictionaryServant extends java.rmi.server.UnicastRemoteObject imple
 	public String remove(String key) throws RemoteException {
 		if (dictionary.containsKey(key)) {
 			dictionary.remove(key);
+			saveState(); // Salvar estado após remover uma palavra
 			return SUCCESS_RESPONSE;
 		} else {
 			return KEY_NOT_FOUND_ERROR;
@@ -48,4 +52,33 @@ public class DictionaryServant extends java.rmi.server.UnicastRemoteObject imple
 		}
 	}
 
+	private void saveState() {
+		try {
+			// Serializar o objeto dictionary e salvá-lo em um arquivo
+			FileOutputStream fileOut = new FileOutputStream("dictionary.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(dictionary);
+			out.close();
+			fileOut.close();
+			System.out.println("Estado do dicionário salvo com sucesso.");
+		} catch (IOException e) {
+			System.out.println("Erro ao salvar o estado do dicionário: " + e.getMessage());
+		}
+	}
+
+	// Implementação para carregar o estado do dicionário a partir de um arquivo
+	@SuppressWarnings("unchecked")
+	private void loadState() {
+		try {
+			// Desserializar o objeto dictionary do arquivo
+			FileInputStream fileIn = new FileInputStream("dictionary.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			dictionary = (Map<String, String>) in.readObject();
+			in.close();
+			fileIn.close();
+			System.out.println("Estado do dicionário carregado com sucesso.");
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Erro ao carregar o estado do dicionário: " + e.getMessage());
+		}
+	}
 }
