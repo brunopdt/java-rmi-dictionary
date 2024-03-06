@@ -1,10 +1,10 @@
 import java.rmi.Naming;
 
-public class CalculadoraServer {
+public class DictionaryServer {
 
-	public CalculadoraServer() {
+	public DictionaryServer() {
 		try {
-			Calculadora c = new CalculadoraServant();
+			Dictionary c = new DictionaryServant();
 			Naming.rebind("rmi://localhost/CalculadoraService", c);
 		} catch (Exception e) {
 			System.out.println(e);
@@ -12,7 +12,7 @@ public class CalculadoraServer {
 	}
 
 	public static void main(String args[]) {
-		new CalculadoraServer();
-		System.out.println("Servidor Calculadora em execução.");
+		new DictionaryServer();
+		System.out.println("Servidor Calculadora em execucao.");
 	}
 }
